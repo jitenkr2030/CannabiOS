@@ -4,64 +4,72 @@ export const revalidate = 0
 export const fetchCache = 'force-no-store'
 
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/db'
-import jwt from 'jsonwebtoken'
+import { PrismaClient } from '@prisma/client'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
-
-// Helper function to verify JWT token
-function verifyToken(request: NextRequest) {
-  const authHeader = request.headers.get('authorization')
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return null
-  }
-  
-  const token = authHeader.substring(7)
-  try {
-    return jwt.verify(token, JWT_SECRET) as any
-  } catch {
-    return null
-  }
-}
+const prisma = new PrismaClient()
 
 export async function GET(request: NextRequest) {
   try {
-    const user = verifyToken(request)
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const { searchParams } = new URL(request.url)
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '10')
+    const search = searchParams.get('search') || ''
+    const category = searchParams.get('category') || ''
+    const storeId = searchParams.get('storeId') || ''
+
+    const skip = (page - 1) * limit
+
+    const where: any = {}
+    
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { sku: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } }
+      ]
+    }
+    
+    if (category) {
+      where.category = category
+    }
+    
+    if (storeId) {
+      where.storeId = storeId
     }
 
-    const { searchParams } = new URL(request.url)
-    const storeId = searchParams.get('storeId') || user.storeId
-    const category = searchParams.get('category')
-    const search = searchParams.get('search')
+    const [products, total] = await Promise.all([
+      prisma.product.findMany({
+        where,
+        skip,
+        take: limit,
+        include: {
+          category: true,
+          batches: {
+            include: {
+              batchProducts: {
+                include: {
+                  batch: true
+                }
+              }
+            }
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      }),
+      prisma.product.count({ where })
+    ])
 
-    const products = await db.product.findMany({
-      where: {
-        storeId,
-        isActive: true,
-        ...(category && { category: category as any }),
-        ...(search && {
-          OR: [
-            { name: { contains: search } },
-            { sku: { contains: search } }
-          ]
-        })
-      },
-      include: {
-        inventory: {
-          where: { storeId }
-        }
-      },
-      orderBy: { name: 'asc' }
+    return NextResponse.json({
+      products,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit)
     })
-
-    return NextResponse.json({ products })
-
   } catch (error) {
-    console.error('Products fetch error:', error)
+    console.error('Products GET error:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to fetch products' },
       { status: 500 }
     )
   }
@@ -69,39 +77,185 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const user = verifyToken(request)
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const body = await request.json()
+    const { 
+      name, 
+      sku, 
+      description, 
+      category, 
+      price, 
+      cost, 
+      thcContent, 
+      cbdContent, 
+      weight, 
+      unit, 
+      storeId,
+      isActive = true 
+    } = body
+
+    // Validate required fields
+    if (!name || !sku || !price) {
+      return NextResponse.json(
+        { error: 'Name, SKU, and price are required' },
+        { status: 400 }
+      )
     }
 
-    const data = await request.json()
-    
-    const product = await db.product.create({
+    // Check if product with SKU already exists
+    const existingProduct = await prisma.product.findUnique({
+      where: { sku }
+    })
+
+    if (existingProduct) {
+      return NextResponse.json(
+        { error: 'Product with this SKU already exists' },
+        { status: 400 }
+      )
+    }
+
+    // Create product
+    const product = await prisma.product.create({
       data: {
-        ...data,
-        storeId: user.storeId
+        name,
+        sku,
+        description,
+        categoryId: category,
+        price,
+        cost,
+        thcContent,
+        cbdContent,
+        weight,
+        unit,
+        storeId,
+        isActive
       },
       include: {
-        inventory: true
+        category: true
       }
     })
 
-    // Create inventory record
-    await db.inventory.create({
-      data: {
-        productId: product.id,
-        storeId: user.storeId,
-        quantity: 0,
-        available: 0
-      }
+    return NextResponse.json({
+      product,
+      message: 'Product created successfully'
     })
-
-    return NextResponse.json({ product }, { status: 201 })
-
   } catch (error) {
-    console.error('Product creation error:', error)
+    console.error('Products POST error:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to create product' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const { id, name, sku, description, category, price, cost, thcContent, cbdContent, weight, unit, storeId, isActive } = body
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Product ID is required' },
+        { status: 400 }
+      )
+    }
+
+    // Check if product exists
+    const existingProduct = await prisma.product.findUnique({
+      where: { id }
+    })
+
+    if (!existingProduct) {
+      return NextResponse.json(
+        { error: 'Product not found' },
+        { status: 404 }
+      )
+    }
+
+    // If SKU is being changed, check if it's already taken
+    if (sku && sku !== existingProduct.sku) {
+      const skuTaken = await prisma.product.findUnique({
+        where: { sku }
+      })
+
+      if (skuTaken) {
+        return NextResponse.json(
+          { error: 'SKU is already taken' },
+          { status: 400 }
+        )
+      }
+    }
+
+    // Update product
+    const product = await prisma.product.update({
+      where: { id },
+      data: {
+        ...(name && { name }),
+        ...(sku && { sku }),
+        ...(description && { description }),
+        ...(category && { categoryId: category }),
+        ...(price && { price }),
+        ...(cost && { cost }),
+        ...(thcContent && { thcContent }),
+        ...(cbdContent && { cbdContent }),
+        ...(weight && { weight }),
+        ...(unit && { unit }),
+        ...(storeId && { storeId }),
+        ...(isActive !== undefined && { isActive })
+      },
+      include: {
+        category: true
+      }
+    })
+
+    return NextResponse.json({
+      product,
+      message: 'Product updated successfully'
+    })
+  } catch (error) {
+    console.error('Products PUT error:', error)
+    return NextResponse.json(
+      { error: 'Failed to update product' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get('id')
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Product ID is required' },
+        { status: 400 }
+      )
+    }
+
+    // Check if product exists
+    const existingProduct = await prisma.product.findUnique({
+      where: { id }
+    })
+
+    if (!existingProduct) {
+      return NextResponse.json(
+        { error: 'Product not found' },
+        { status: 404 }
+      )
+    }
+
+    // Delete product
+    await prisma.product.delete({
+      where: { id }
+    })
+
+    return NextResponse.json({
+      message: 'Product deleted successfully'
+    })
+  } catch (error) {
+    console.error('Products DELETE error:', error)
+    return NextResponse.json(
+      { error: 'Failed to delete product' },
       { status: 500 }
     )
   }

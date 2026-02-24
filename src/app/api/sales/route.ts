@@ -4,73 +4,79 @@ export const revalidate = 0
 export const fetchCache = 'force-no-store'
 
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/db'
-import jwt from 'jsonwebtoken'
+import { PrismaClient } from '@prisma/client'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
-
-function verifyToken(request: NextRequest) {
-  const authHeader = request.headers.get('authorization')
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return null
-  }
-  
-  const token = authHeader.substring(7)
-  try {
-    return jwt.verify(token, JWT_SECRET) as any
-  } catch {
-    return null
-  }
-}
+const prisma = new PrismaClient()
 
 export async function GET(request: NextRequest) {
   try {
-    const user = verifyToken(request)
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const { searchParams } = new URL(request.url)
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '10')
+    const startDate = searchParams.get('startDate') || ''
+    const endDate = searchParams.get('endDate') || ''
+    const storeId = searchParams.get('storeId') || ''
+
+    const skip = (page - 1) * limit
+
+    const where: any = {}
+    
+    if (startDate || endDate) {
+      where.createdAt = {}
+      if (startDate) {
+        where.createdAt.gte = new Date(startDate)
+      }
+      if (endDate) {
+        where.createdAt.lte = new Date(endDate)
+      }
+    }
+    
+    if (storeId) {
+      where.storeId = storeId
     }
 
-    const { searchParams } = new URL(request.url)
-    const storeId = searchParams.get('storeId') || user.storeId
-    const status = searchParams.get('status')
-    const dateFrom = searchParams.get('dateFrom')
-    const dateTo = searchParams.get('dateTo')
+    const [sales, total] = await Promise.all([
+      prisma.sale.findMany({
+        where,
+        skip,
+        take: limit,
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              role: true
+            }
+          },
+          saleItems: {
+            include: {
+              product: true,
+              batch: {
+                include: {
+                  batchProducts: true
+                }
+              }
+            }
+          },
+          payments: true
+        },
+        orderBy: { createdAt: 'desc' }
+      }),
+      prisma.sale.count({ where })
+    ])
 
-    const sales = await db.sale.findMany({
-      where: {
-        storeId,
-        ...(status && { status: status as any }),
-        ...(dateFrom && dateTo && {
-          createdAt: {
-            gte: new Date(dateFrom),
-            lte: new Date(dateTo)
-          }
-        })
-      },
-      include: {
-        items: {
-          include: {
-            product: true
-          }
-        },
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        },
-        payments: true
-      },
-      orderBy: { createdAt: 'desc' }
+    return NextResponse.json({
+      sales,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit)
     })
-
-    return NextResponse.json({ sales })
-
   } catch (error) {
-    console.error('Sales fetch error:', error)
+    console.error('Sales GET error:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to fetch sales' },
       { status: 500 }
     )
   }
@@ -78,84 +84,164 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const user = verifyToken(request)
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const body = await request.json()
+    const { 
+      customerId, 
+      items, 
+      subtotal, 
+      tax, 
+      total, 
+      paymentMethod, 
+      storeId,
+      notes 
+    } = body
+
+    // Validate required fields
+    if (!customerId || !items || !items.length || !total) {
+      return NextResponse.json(
+        { error: 'Customer ID, items, and total are required' },
+        { status: 400 }
+      )
     }
 
-    const data = await request.json()
-    const { items, ...saleData } = data
-
-    // Generate receipt number
-    const receiptNumber = `RCP-${Date.now()}`
-
-    const sale = await db.sale.create({
+    // Create sale
+    const sale = await prisma.sale.create({
       data: {
-        ...saleData,
-        receiptNumber,
-        storeId: user.storeId,
-        userId: user.id
+        customerId,
+        subtotal,
+        tax,
+        total,
+        paymentMethod,
+        storeId,
+        notes,
+        status: 'COMPLETED'
       },
       include: {
-        items: {
-          include: {
-            product: true
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true
           }
-        }
+        },
+        saleItems: {
+          include: {
+            product: true,
+            batch: true
+          }
+        },
+        payments: true
       }
     })
 
-    // Create sale items and update inventory
+    // Create sale items
     for (const item of items) {
-      await db.saleItem.create({
+      await prisma.saleItem.create({
         data: {
           saleId: sale.id,
           productId: item.productId,
+          batchId: item.batchId,
           quantity: item.quantity,
           unitPrice: item.unitPrice,
-          discount: item.discount || 0,
-          total: item.total
+          totalPrice: item.totalPrice,
+          discount: item.discount || 0
+        },
+        include: {
+          product: true,
+          batch: true
         }
       })
 
       // Update inventory
-      const inventory = await db.inventory.findFirst({
-        where: {
+      await prisma.stockMovement.create({
+        data: {
           productId: item.productId,
-          storeId: user.storeId
+          batchId: item.batchId,
+          movementType: 'SALE',
+          quantity: -item.quantity,
+          referenceId: sale.id,
+          referenceType: 'SALE',
+          storeId,
+          notes: `Sale of ${item.quantity} units of ${item.productName}`
         }
       })
-
-      if (inventory) {
-        const newQuantity = inventory.quantity - item.quantity
-        await db.inventory.update({
-          where: { id: inventory.id },
-          data: { 
-            quantity: newQuantity,
-            available: newQuantity - inventory.reserved
-          }
-        })
-
-        // Create stock movement
-        await db.stockMovement.create({
-          data: {
-            inventoryId: inventory.id,
-            userId: user.id,
-            type: 'SALE',
-            quantity: -item.quantity,
-            reason: `Sale ${sale.receiptNumber}`,
-            reference: sale.id
-          }
-        })
-      }
     }
 
-    return NextResponse.json({ sale }, { status: 201 })
+    // Update inventory stock
+    for (const item of items) {
+      await prisma.inventory.updateMany({
+        where: {
+          productId: item.productId,
+          batchId: item.batchId
+        },
+        data: {
+          quantity: {
+            decrement: item.quantity
+          }
+        }
+      })
+    }
 
+    return NextResponse.json({
+      sale,
+      message: 'Sale created successfully'
+    })
   } catch (error) {
-    console.error('Sale creation error:', error)
+    console.error('Sales POST error:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to create sale' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const { id, status, notes } = body
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Sale ID is required' },
+        { status: 400 }
+      )
+    }
+
+    // Update sale
+    const sale = await prisma.sale.update({
+      where: { id },
+      data: {
+        ...(status && { status }),
+        ...(notes && { notes })
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true
+          }
+        },
+        saleItems: {
+          include: {
+            product: true,
+            batch: true
+          }
+        },
+        payments: true
+      }
+    })
+
+    return NextResponse.json({
+      sale,
+      message: 'Sale updated successfully'
+    })
+  } catch (error) {
+    console.error('Sales PUT error:', error)
+    return NextResponse.json(
+      { error: 'Failed to update sale' },
       { status: 500 }
     )
   }
