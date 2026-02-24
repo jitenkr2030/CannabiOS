@@ -30,7 +30,8 @@ import {
   Filter, 
   Download,
   RefreshCw,
-  AlertCircle
+  AlertCircle,
+  UserPlus
 } from 'lucide-react'
 
 interface Customer {
