@@ -5,13 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { 
   Globe, 
   Zap, 
   Database, 
-  Cloud, 
   Plug, 
   Settings, 
   CheckCircle, 
@@ -25,11 +23,17 @@ import {
   Filter, 
   Activity, 
   Shield, 
-  Key, 
   BarChart3,
   Link,
   Api,
-  Webhook
+  Webhook,
+  CreditCard,
+  Truck,
+  Package,
+  Mail,
+  Calculator,
+  MessageCircle,
+  Cloud
 } from 'lucide-react'
 
 interface Integration {
@@ -57,7 +61,6 @@ export default function IntegrationHub() {
   const [filterStatus, setFilterStatus] = useState('all')
   const [activeTab, setActiveTab] = useState('overview')
 
-  // Mock data
   useEffect(() => {
     const mockIntegrations: Integration[] = [
       {
@@ -201,7 +204,7 @@ export default function IntegrationHub() {
       case 'analytics': return <BarChart3 className="h-5 w-5" />
       case 'accounting': return <Calculator className="h-5 w-5" />
       case 'communication': return <Mail className="h-5 w-5" />
-      case 'storage': return <Database className="h-5 w-5" />
+      case 'storage': return <Cloud className="h-5 w-5" />
       default: return <Plug className="h-5 w-5" />
     }
   }
