@@ -1,0 +1,39 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel Deployment
+        run: |
+          echo "🚀 Triggering Vercel deployment for commit: ${{ github.sha }}"
+          echo "📦 Repository: ${{ github.repository }}"
+          echo "🌿 Branch: ${{ github.ref_name }}"
+          
+          # Method 1: Use Vercel CLI
+          if command -v vercel &> /dev/null; then
+            echo "📦 Deploying with Vercel CLI..."
+            vercel --prod --force --confirm
+          else
+            echo "⚠️  Vercel CLI not available"
+          fi
+          
+          # Method 2: Notify (if CLI not available)
+          echo "📧 Please deploy manually in Vercel dashboard"
+          echo "🔗 https://vercel.com/jitenkr2030/CannabisOS"
+          echo "📋 Commit: ${{ github.sha }}"
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: always()
+    steps:
+      - name: Notify Deployment Status
+        run: |
+          echo "📊 Deployment status: ${{ needs.deploy.result }}"
+          echo "🔗 Check deployment at: https://vercel.com/jitenkr2030/CannabisOS"
