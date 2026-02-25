@@ -264,7 +264,7 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-3 lg:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
               <Leaf className="h-10 w-10 text-green-400" />
-              <span className="text-2xl font-bold text-white">CannabisOS</span>
+              <span className="text-2xl font-bold text-white">CannabiOS</span>
             </div>
             
             {/* Contact Info */}
@@ -383,7 +383,7 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} CannabisOS. All rights reserved.
+              © {new Date().getFullYear()} CannabiOS. All rights reserved.
             </div>
             <div className="flex items-center space-x-6 text-sm text-gray-400">
               <Link href="/privacy" className="hover:text-green-400 transition-colors">
@@ -420,7 +420,7 @@ export default function Footer() {
                 Ready to transform your dispensary?
               </h3>
               <p className="text-gray-400 text-sm">
-                Join 500+ dispensaries using CannabisOS to streamline operations
+                Join 500+ dispensaries using CannabiOS to streamline operations
               </p>
             </div>
             <div className="flex space-x-4">

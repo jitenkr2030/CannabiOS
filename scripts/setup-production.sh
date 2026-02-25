@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🚀 CannabisOS Production Setup Script"
+echo "🚀 CannabiOS Production Setup Script"
 echo "======================================"
 echo ""
 echo "⚠️  SECURITY WARNING: This script helps you set up production environment securely"

@@ -98,7 +98,7 @@ export class CashfreeService {
         order_currency: orderData.order_currency,
         customer_details: orderData.customer_details,
         order_meta: orderData.order_meta,
-        order_note: "CannabisOS Subscription",
+        order_note: "CannabiOS Subscription",
         order_tags: ["subscription", "cannabisos"],
       });
 
@@ -142,7 +142,7 @@ export class CashfreeService {
         plan_id: subscriptionData.plan_id,
         customer_details: subscriptionData.customer_details,
         subscription_meta: subscriptionData.subscription_meta,
-        subscription_note: "CannabisOS Recurring Subscription",
+        subscription_note: "CannabiOS Recurring Subscription",
         subscription_tags: ["subscription", "cannabisos", "recurring"],
       });
 

@@ -25,7 +25,7 @@ jobs:
           
           # Method 2: Notify (if CLI not available)
           echo "📧 Please deploy manually in Vercel dashboard"
-          echo "🔗 https://vercel.com/jitenkr2030/CannabisOS"
+          echo "🔗 https://vercel.com/jitenkr2030/CannabiOS"
           echo "📋 Commit: ${{ github.sha }}"
 
   notify:
@@ -36,4 +36,4 @@ jobs:
       - name: Notify Deployment Status
         run: |
           echo "📊 Deployment status: ${{ needs.deploy.result }}"
-          echo "🔗 Check deployment at: https://vercel.com/jitenkr2030/CannabisOS"
+          echo "🔗 Check deployment at: https://vercel.com/jitenkr2030/CannabiOS"

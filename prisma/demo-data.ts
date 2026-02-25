@@ -533,7 +533,7 @@ async function seedDemoData() {
     const demoSettings = [
       {
         key: 'business_name',
-        value: 'CannabisOS Demo Dispensary',
+        value: 'CannabiOS Demo Dispensary',
         description: 'Business name for the demo',
       },
       {

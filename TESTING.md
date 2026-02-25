@@ -1,6 +1,6 @@
-# 🧪 Testing Documentation for CannabisOS
+# 🧪 Testing Documentation for CannabiOS
 
-This document provides comprehensive information about the testing framework, test structure, and how to run tests for the CannabisOS application.
+This document provides comprehensive information about the testing framework, test structure, and how to run tests for the CannabiOS application.
 
 ## 📋 Table of Contents
 
@@ -17,7 +17,7 @@ This document provides comprehensive information about the testing framework, te
 
 ## 🎯 Overview
 
-CannabisOS includes a comprehensive testing suite that covers:
+CannabiOS includes a comprehensive testing suite that covers:
 
 - **Unit Tests** - Individual component testing
 - **Integration Tests** - API endpoint testing
@@ -38,7 +38,7 @@ CannabisOS includes a comprehensive testing suite that covers:
 ## 📁 Test Structure
 
 ```
-CannabisOS/
+CannabiOS/
 ├── src/
 │   ├── components/
 │   │   └── __tests__/

@@ -1,4 +1,4 @@
-// CannabisOS - Comprehensive Dispensary Management System
+// CannabiOS - Comprehensive Dispensary Management System
 
 generator client {
   provider = "prisma-client-js"

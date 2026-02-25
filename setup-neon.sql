@@ -1,4 +1,4 @@
--- Neon PostgreSQL Database Setup for CannabisOS
+-- Neon PostgreSQL Database Setup for CannabiOS
 -- This script will be run manually to set up the database schema
 
 -- The schema will be pushed using Prisma when the build issues are resolved

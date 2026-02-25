@@ -208,7 +208,7 @@ export const demoRecentActivity = [
 ]
 
 export const demoSettings = {
-  businessName: 'CannabisOS Demo Dispensary',
+  businessName: 'CannabiOS Demo Dispensary',
   businessAddress: '123 Queen Street West, Toronto, ON M5V 2A6',
   businessPhone: '+1-416-555-0123',
   businessEmail: 'info@cannabisos.com',

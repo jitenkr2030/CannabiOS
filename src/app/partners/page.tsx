@@ -37,7 +37,7 @@ export default function PartnersPage() {
     {
       icon: <Rocket className="h-8 w-8 text-blue-600" />,
       title: "White-Label Solutions",
-      description: "Offer CannabisOS as your own branded platform",
+      description: "Offer CannabiOS as your own branded platform",
       highlight: "Full customization"
     },
     {
@@ -69,13 +69,13 @@ export default function PartnersPage() {
     },
     {
       name: "Reseller Partner",
-      description: "Sell CannabisOS to your customer base",
+      description: "Sell CannabiOS to your customer base",
       icon: <Building className="h-6 w-6" />,
       commission: "25-30%"
     },
     {
       name: "Consultant Partner",
-      description: "Use CannabisOS to manage multiple client dispensaries",
+      description: "Use CannabiOS to manage multiple client dispensaries",
       icon: <Users className="h-6 w-6" />,
       commission: "20-25%"
     }
@@ -98,7 +98,7 @@ export default function PartnersPage() {
               <Handshake className="h-16 w-16 text-white" />
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Partner with CannabisOS
+              Partner with CannabiOS
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8">
               Join our partner program and grow your business with the leading dispensery management platform
@@ -120,7 +120,7 @@ export default function PartnersPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Partner with CannabisOS?
+              Why Partner with CannabiOS?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Industry-leading commissions, comprehensive support, and proven success
@@ -192,7 +192,7 @@ export default function PartnersPage() {
               Proven Partner Success
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Join hundreds of successful partners growing with CannabisOS
+              Join hundreds of successful partners growing with CannabiOS
             </p>
           </div>
 

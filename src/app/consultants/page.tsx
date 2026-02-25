@@ -119,7 +119,7 @@ export default function ConsultantDashboard() {
       logo: '/logos/consultant-logo.png',
       primaryColor: '#10b981',
       secondaryColor: '#059669',
-      companyName: 'CannabisOS Consulting',
+      companyName: 'CannabiOS Consulting',
       domain: 'consultant.cannabisos.com',
       email: 'info@cannabisos-consulting.com',
       phone: '+1-555-CONSULT',

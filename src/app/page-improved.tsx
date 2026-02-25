@@ -464,7 +464,7 @@ export default function Dashboard({ user, onLogout }: { user?: any; onLogout?: (
             <div className="flex items-center justify-between h-16 px-6 border-b">
               <div className="flex items-center space-x-2">
                 <Leaf className="h-8 w-8 text-green-600" />
-                <span className="text-xl font-bold text-gray-900">CannabisOS</span>
+                <span className="text-xl font-bold text-gray-900">CannabiOS</span>
               </div>
               <Button
                 variant="ghost"

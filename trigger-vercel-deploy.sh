@@ -18,7 +18,7 @@ else
                 "project": "cannabis-os",
                 "target": "production",
                 "gitCommit": {
-                    "repo": "jitenkr2030/CannabisOS",
+                    "repo": "jitenkr2030/CannabiOS",
                     "branch": "master",
                     "commit": "'$(git rev-parse HEAD)'"
                 }

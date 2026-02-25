@@ -14,10 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CannabisOS - Dispensary Management System",
+  title: "CannabiOS - Dispensary Management System",
   description: "Comprehensive dispensary management system with POS, inventory, AI accounting, and compliance tracking for cannabis retailers.",
   keywords: ["cannabis", "dispensary", "POS", "inventory", "compliance", "accounting", "delivery", "QR authentication"],
-  authors: [{ name: "CannabisOS Team" }],
+  authors: [{ name: "CannabiOS Team" }],
   icons: {
     icon: "/icons/icon-192x192.png",
     apple: "/icons/icon-192x192.png",
@@ -26,19 +26,19 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "CannabisOS",
+    title: "CannabiOS",
   },
   formatDetection: {
     telephone: false,
   },
   openGraph: {
-    title: "CannabisOS - Dispensary Management System",
+    title: "CannabiOS - Dispensary Management System",
     description: "Complete dispensary management with POS, inventory, AI accounting, and compliance tracking",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "CannabisOS - Dispensary Management System",
+    title: "CannabiOS - Dispensary Management System",
     description: "Complete dispensary management with POS, inventory, AI accounting, and compliance tracking",
   },
 };
@@ -55,8 +55,8 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="CannabisOS" />
-        <meta name="application-name" content="CannabisOS" />
+        <meta name="apple-mobile-web-app-title" content="CannabiOS" />
+        <meta name="application-name" content="CannabiOS" />
         <meta name="msapplication-TileColor" content="#16a34a" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
       </head>

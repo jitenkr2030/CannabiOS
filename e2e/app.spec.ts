@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('CannabisOS Application', () => {
+test.describe('CannabiOS Application', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to the application
     await page.goto('/')
@@ -11,7 +11,7 @@ test.describe('CannabisOS Application', () => {
 
   test('homepage loads correctly', async ({ page }) => {
     // Check if the main title is present
-    await expect(page.locator('h1')).toContainText('CannabisOS')
+    await expect(page.locator('h1')).toContainText('CannabiOS')
     
     // Check if navigation elements are present
     await expect(page.locator('nav')).toBeVisible()
@@ -106,7 +106,7 @@ test.describe('CannabisOS Application', () => {
   test('SEO meta tags are present', async ({ page }) => {
     // Check for title
     const title = await page.title()
-    expect(title).toContain('CannabisOS')
+    expect(title).toContain('CannabiOS')
     
     // Check for meta description
     const description = await page.getAttribute('meta[name="description"]', 'content')

@@ -177,7 +177,7 @@ export default function LandingPage() {
                 <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">🌿</span>
                 </div>
-                <span className="text-xl font-bold text-gray-900">CannabisOS</span>
+                <span className="text-xl font-bold text-gray-900">CannabiOS</span>
               </div>
             </div>
             
@@ -378,7 +378,7 @@ export default function LandingPage() {
             Ready to Transform Your Dispensery?
           </h2>
           <p className="text-xl text-green-100 mb-8">
-            Join hundreds of dispensaries using CannabisOS to streamline their operations
+            Join hundreds of dispensaries using CannabiOS to streamline their operations
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" variant="secondary" onClick={() => signIn()}>
@@ -401,7 +401,7 @@ export default function LandingPage() {
                 <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">🌿</span>
                 </div>
-                <span className="text-xl font-bold">CannabisOS</span>
+                <span className="text-xl font-bold">CannabiOS</span>
               </div>
               <p className="text-gray-400">
                 Complete dispensery management system for modern cannabis businesses
@@ -449,7 +449,7 @@ export default function LandingPage() {
                   </Link>
                 </div>
                 <p className="text-gray-400">
-                  © 2024 CannabisOS. All rights reserved.
+                  © 2024 CannabiOS. All rights reserved.
                 </p>
               </div>
             </div>

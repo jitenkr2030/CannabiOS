@@ -1,6 +1,6 @@
-# 🌿 CannabisOS - Complete Dispensary Management System
+# 🌿 CannabiOS - Complete Dispensary Management System
 
-A comprehensive, production-ready dispensary management platform built with Next.js 16, TypeScript, and modern web technologies. CannabisOS streamlines operations for cannabis retailers with POS, inventory, AI accounting, and compliance tracking.
+A comprehensive, production-ready dispensary management platform built with Next.js 16, TypeScript, and modern web technologies. CannabiOS streamlines operations for cannabis retailers with POS, inventory, AI accounting, and compliance tracking.
 
 ## 🚀 Features
 
@@ -100,8 +100,8 @@ A comprehensive, production-ready dispensary management platform built with Next
 
 ### **1. Clone & Install**
 ```bash
-git clone https://github.com/jitenkr2030/CannabisOS.git
-cd CannabisOS
+git clone https://github.com/jitenkr2030/CannabiOS.git
+cd CannabiOS
 bun install  # or npm install
 ```
 
@@ -389,8 +389,8 @@ src/
 
 ```bash
 # Clone and setup
-git clone https://github.com/jitenkr2030/CannabisOS.git
-cd CannabisOS
+git clone https://github.com/jitenkr2030/CannabiOS.git
+cd CannabiOS
 bun install
 
 # Setup database
@@ -404,7 +404,7 @@ bun run dev
 # Login with: admin@cannabisos.com / demo123
 ```
 
-**CannabisOS** - The complete solution for modern dispensary management. 🌿
+**CannabiOS** - The complete solution for modern dispensary management. 🌿
 
 ---
 

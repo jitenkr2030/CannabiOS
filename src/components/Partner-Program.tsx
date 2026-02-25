@@ -459,7 +459,7 @@ export default function PartnerProgram() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900">Partner Program</h1>
-          <p className="text-gray-600">Manage partners, track commissions, and oversee the CannabisOS partner ecosystem</p>
+          <p className="text-gray-600">Manage partners, track commissions, and oversee the CannabiOS partner ecosystem</p>
         </div>
 
         {/* Overview Stats */}
@@ -520,7 +520,7 @@ export default function PartnerProgram() {
         {/* Partner Program Offer Alert */}
         <Alert className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
           <Gift className="h-4 w-4 text-green-600" />
-          <AlertTitle className="text-green-800">🎉 CannabisOS Partner Program</AlertTitle>
+          <AlertTitle className="text-green-800">🎉 CannabiOS Partner Program</AlertTitle>
           <AlertDescription className="text-green-700">
             <strong>Offer:</strong> 25% recurring commission + white-label dashboard + onboarding support. 
             Perfect for consultants, agencies, and industry professionals looking to monetize their network.
@@ -562,7 +562,7 @@ export default function PartnerProgram() {
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-lg">White-Label Dashboard</h3>
-                        <p className="text-gray-600">Offer CannabisOS under your own brand with custom domain, logo, colors, and company name. Present as your own solution to clients.</p>
+                        <p className="text-gray-600">Offer CannabiOS under your own brand with custom domain, logo, colors, and company name. Present as your own solution to clients.</p>
                       </div>
                     </div>
 
@@ -998,7 +998,7 @@ export default function PartnerProgram() {
                     <Building className="h-4 w-4" />
                     <AlertTitle>White-Label Dashboard</AlertTitle>
                     <AlertDescription>
-                      Partners can offer CannabisOS under their own brand with custom domain, logo, and colors. This creates a seamless experience for their clients while leveraging our powerful platform.
+                      Partners can offer CannabiOS under their own brand with custom domain, logo, and colors. This creates a seamless experience for their clients while leveraging our powerful platform.
                     </AlertDescription>
                   </Alert>
 

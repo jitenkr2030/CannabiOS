@@ -77,7 +77,7 @@ export default function RegisterPage() {
           <div className="flex justify-center items-center mb-6">
             <Leaf className="h-12 w-12 text-green-600" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">Join CannabisOS</h2>
+          <h2 className="text-3xl font-bold text-gray-900">Join CannabiOS</h2>
           <p className="mt-2 text-sm text-gray-600">
             Start your free trial and manage your dispensery
           </p>

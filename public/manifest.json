@@ -1,6 +1,6 @@
 {
-  "name": "CannabisOS - Dispensary Management",
-  "short_name": "CannabisOS",
+  "name": "CannabiOS - Dispensary Management",
+  "short_name": "CannabiOS",
   "description": "Comprehensive dispensary management system with POS, inventory, and compliance tracking",
   "start_url": "/",
   "display": "standalone",

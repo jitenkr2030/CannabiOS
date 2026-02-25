@@ -59,7 +59,7 @@ export default function LoginPage() {
           <div className="flex justify-center items-center mb-6">
             <Leaf className="h-12 w-12 text-green-600" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">Sign in to CannabisOS</h2>
+          <h2 className="text-3xl font-bold text-gray-900">Sign in to CannabiOS</h2>
           <p className="mt-2 text-sm text-gray-600">
             Access your dispensery management dashboard
           </p>
