@@ -933,6 +933,7 @@ model Subscription {
   user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   invoices          Invoice[]
   usageLogs         UsageLog[]
+  transactions      Transaction[]
 
   @@map("subscriptions")
 }
