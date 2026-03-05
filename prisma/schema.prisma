@@ -37,7 +37,10 @@ model User {
   consultant    Consultant? @relation("ConsultantUsers")
   client        Client?  @relation("ClientUsers", fields: [clientId], references: [id])
   partner       Partner? @relation("PartnerUsers", fields: [partnerId], references: [id])
-  
+  subscriptions Subscription[]
+  usageLogs     UsageLog[]
+  transactions  Transaction[]
+
   @@map("users")
 }
 
@@ -610,13 +613,15 @@ model Invoice {
   paidDate      DateTime?
   paymentMethod String?
   notes         String?
+  subscriptionId String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  
+
   // Relationships
   consultant    Consultant @relation(fields: [consultantId], references: [id], onDelete: Cascade)
   client        Client     @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  
+  subscription  Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
   @@map("invoices")
 }
 
